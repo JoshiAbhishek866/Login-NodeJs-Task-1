@@ -20,12 +20,12 @@ app.use(express.urlencoded({ extended:false }))
 app.use(express.json());
 app.set('view engine', 'hbs');
 db.connect((error)=>{
-     if(error){
+    if (error) {
         console.log(error);
-     }
-     else{
+    }
+    else{
         console.log("MYsql connected..");
-     }
+    }
 })
 
 app.use('/', require('./routes/pages'));
