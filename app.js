@@ -27,10 +27,9 @@ db.connect((error)=>{
         console.log("MYsql connected..");
     }
 })
-
 app.use('/', require('./routes/pages'));
 app.use('/auth', require('./routes/auth'));
 
 app.listen(5500 ,()=>{
-    console.log("server started on Port 5500");
+    console.log("server started on Port 5");
 })
