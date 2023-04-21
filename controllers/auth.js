@@ -12,7 +12,9 @@ const db=mysql.createConnection({
 exports.register =(req,res) => {
     console.log(req.body);
 
-    const name = req.body.name;
+    const fname = req.body.firstname;
+    const lname = req.body.lastname;
+    const username = req.body.username;
     const email=req.body.email;
     const password=req.body.password;
     const passwordconfirm=req.body.passwordconfirm;
@@ -31,8 +33,51 @@ exports.register =(req,res) => {
                 message: 'That email is already in use '
             })
         } 
+        function validateUsername(username) {
+            // Check for at least one uppercase letter
+            if (!/[A-Z]/.test(username)) {
+              return false;
+              console.log("Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters");
+            }
+            // Check for at least one lowercase letter
+            if (!/[a-z]/.test(username)) {
+              return false;
+              console.log("Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters");
+            }
+            // All checks passed
+            return true;
+          }
+          if (!validateUsername(username)) {
+            return res.render('register',{
+                message: 'username must contain more than 8 letters'
+            });
+        }
         console.log(password);
         console.log(passwordconfirm);
+        function validatePassword(password) {
+            // Check for at least one uppercase letter
+            if (!/[A-Z]/.test(password)) {
+              return false;
+              console.log("Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters");
+            }
+            // Check for at least one lowercase letter
+            if (!/[a-z]/.test(password)) {
+              return false;
+              console.log("Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters");
+            }
+            // Check for at least one special character
+            if (!/[^A-Za-z0-9]/.test(password)) {
+              return false;
+              console.log("Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters");
+            }
+            // All checks passed
+            return true;
+          }
+          if (!validatePassword(password)) {
+            return res.render('register',{
+                message: 'Password must contain at least one uppercase letter, one lowercase letter, one special character, and be at least 8 characters long'
+            });
+        }        
         if(password!=passwordconfirm){
             return res.render('register',{
                 message: 'Passwords do not match  '
@@ -40,8 +85,10 @@ exports.register =(req,res) => {
         }
         console.log(password);
        db.query('insert into users set ?',{
-        id:name,
-        name: name,
+        id:fname,
+        firstname: fname,
+        lastname:lname,
+        username:username,
         email:email,
         password:password
        },
